@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App-sage", "app-sage\App-sage.csproj", "{F48179D5-C08B-4141-9A13-BE9CF551CCCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppSage", "app-sage\AppSage.csproj", "{F48179D5-C08B-4141-9A13-BE9CF551CCCF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLibrary", "BusinessLibrary\BusinessLibrary.csproj", "{F0C740BF-BAE8-437C-9B2D-4BC58CD66FD7}"
 EndProject

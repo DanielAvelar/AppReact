@@ -1,11 +1,12 @@
 ﻿import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
-import * as Contact from './Contact';
+import * as Client from './Client';
 
 export default function configureStore(history, initialState) {
     const reducers = {
-        contacts: Contact.reducer
+        people: Client.reducerPeople,
+        addresses: Client.reducerAddresses
     };
 
     const middleware = [

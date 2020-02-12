@@ -19,21 +19,16 @@ export default class NavMenu extends React.Component {
     }
     render() {
         return (
-            <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light >
-                    <Container>
-                        <NavbarBrand tag={Link} to="/">AspNetCoreReactRedux</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} className="mr-2" />
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/contacts">Contact</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
-                    </Container>
-                </Navbar>
-            </header>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <Link to={'/'} className="navbar-brand">Cadastro de Pessoas/Endereço</Link>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item">
+                            <Link to={'/'} className="nav-link">Home</Link>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         );
     }
 }
