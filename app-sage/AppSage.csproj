@@ -11,6 +11,9 @@
     <UserSecretsId>ce446fe2-c652-4c86-8d02-dce79c2f1074</UserSecretsId>
     <AssemblyName>AppSage</AssemblyName>
     <RootNamespace>AppSage</RootNamespace>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>

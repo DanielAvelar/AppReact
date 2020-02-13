@@ -5,8 +5,9 @@ import * as Client from './Client';
 
 export default function configureStore(history, initialState) {
     const reducers = {
-        people: Client.reducerPeople,
-        addresses: Client.reducerAddresses
+        //people: Client.reducerPeople,
+        //addresses: Client.reducerAddresses
+        client: Client.reducer
     };
 
     const middleware = [

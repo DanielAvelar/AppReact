@@ -26,8 +26,10 @@ namespace BusinessLibrary.Service
             }
         }
 
-        public async Task<bool> SavePerson(PersonModel personModel)
+        public async Task<PersonModel> SavePerson(PersonModel personModel)
         {
+            PersonModel response = new PersonModel();
+
             using (DBContext db = new DBContext())
             {
                 DataAccessLibrary.EntityModels.Person person = db.Person.Where
@@ -54,7 +56,16 @@ namespace BusinessLibrary.Service
                     person.Phone = personModel.Phone;
                 }
 
-                return await db.SaveChangesAsync() >= 1;
+                await db.SaveChangesAsync();
+
+                response.PersonId = person.PersonId;
+                response.Cpf = person.Cpf;
+                response.FirstName = person.FirstName;
+                response.LastName = person.LastName;
+                response.Email = person.Email;
+                response.Phone = person.Phone;
+
+                return response;
             }
         }
 
@@ -71,19 +82,67 @@ namespace BusinessLibrary.Service
             }
         }
 
-        public Task<List<AddressModel>> GetAddress()
+        public async Task<List<AddressModel>> GetAddress()
         {
-            throw new System.NotImplementedException();
+            using (DBContext db = new DBContext())
+            {
+                return await(from a in db.Address.AsNoTracking()
+                             select new AddressModel
+                             {
+                                 AddressId = a.AddressId,
+                                 Street = a.Street,
+                                 Number = a.Number,
+                                 City = a.City,
+                                 State = a.State,
+                                 Country = a.Country
+                             }).ToListAsync();
+            }
         }
 
-        public Task<bool> SaveAddress(AddressModel person)
+        public async Task<bool> SaveAddress(AddressModel addressModel)
         {
-            throw new System.NotImplementedException();
+            using (DBContext db = new DBContext())
+            {
+                DataAccessLibrary.EntityModels.Address address = db.Address.Where
+                         (x => x.AddressId == addressModel.AddressId).FirstOrDefault();
+                if (address == null)
+                {
+                    address = new Address()
+                    {
+                        Street = addressModel.Street,
+                        Number = addressModel.Number,
+                        City = addressModel.City,
+                        State = addressModel.State,
+                        Country = addressModel.Country,
+                        Fk_PersonId = addressModel.Fk_PersonId
+                    };
+                    db.Address.Add(address);
+
+                }
+                else
+                {
+                    address.Street = addressModel.Street;
+                    address.Number = addressModel.Number;
+                    address.City = addressModel.City;
+                    address.State = addressModel.State;
+                    address.Country = addressModel.Country;
+                }
+
+                return await db.SaveChangesAsync() >= 1;
+            }
         }
 
-        public Task<bool> DeleteAddress(int personId)
+        public async Task<bool> DeleteAddress(int addressId)
         {
-            throw new System.NotImplementedException();
+            using (DBContext db = new DBContext())
+            {
+                DataAccessLibrary.EntityModels.Address address = db.Address.Where(x => x.AddressId == addressId).FirstOrDefault();
+                if (address != null)
+                {
+                    db.Address.Remove(address);
+                }
+                return await db.SaveChangesAsync() >= 1;
+            }
         }
     }
 }

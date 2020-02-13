@@ -57,6 +57,7 @@ class Person extends Component {
         if (this.state.person.firstName != "" && this.state.person.lastName != "" && this.state.person.email != "" && this.state.person.phone != "") {
             this.props.savePerson(this.state.person);
             this.growl.show({ severity: 'success', detail: this.newPerson ? "Data Saved Successfully" : "Data Updated Successfully" });
+            this.props.nextPage();
         }
     }
 
@@ -101,7 +102,7 @@ class Person extends Component {
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="col-md-4">
                                     <label htmlFor="cpf">Cpf</label>
-                                    <InputText id="cpf" onChange={(e) => { this.updateProperty('cpf', e.target.value) }} value={this.state.person.cpf} style={{ width: '100%' }} required />
+                                    <InputMask id="cpf" mask="99999999999" onChange={(e) => { this.updateProperty('cpf', e.target.value) }} value={this.state.person.cpf} style={{ width: '100%' }} required />
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="email">E-mail</label>
@@ -114,10 +115,10 @@ class Person extends Component {
                             </div>
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="form-group col-md-2">
-                                    <Button label="Excluir" disabled={this.newPerson ? true : false} icon="pi pi-times" onClick={this.delete} />
+                                    <Button label="Excluir" disabled={this.newPerson ? true : false} className="p-button-danger" icon="pi pi-times" onClick={this.delete} />
                                 </div>
                                 <div className="form-group col-md-10">
-                                    <Button label={this.newPerson ? "Próximo" : "Atualizar"} icon="pi pi-check" onClick={this.save} />
+                                    <Button label={this.newPerson ? "Próximo" : "Atualizar"} className="p-button-success" icon="pi pi-check" onClick={this.save} />
                                 </div>
                             </div>
                         </form>
@@ -130,10 +131,11 @@ class Person extends Component {
 
 function mapStateToProps(state) {
     return {
-        people: state.people.people,
-        loading: state.people.loading,
-        errors: state.people.errors,
-        forceReload: state.people.forceReload
+        people: state.client.people,
+        loading: state.client.loading,
+        personId: state.client.personId,
+        errors: state.client.errors,
+        forceReload: state.client.forceReload
     }
 }
 

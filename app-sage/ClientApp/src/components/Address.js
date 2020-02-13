@@ -19,8 +19,8 @@ class Address extends Component {
         this.delete = this.delete.bind(this);
     }
 
-    componentDidMount() {
-        this.fetchData();
+    async componentDidMount() {
+        await this.fetchData();
     }
 
     componentDidUpdate() {
@@ -42,7 +42,6 @@ class Address extends Component {
     onAddressSelect(e) {
         this.newAddress = false;
         this.setState({
-            displayDialog: true,
             address: Object.assign({}, e.data)
         });
     }
@@ -50,17 +49,16 @@ class Address extends Component {
     addNew() {
         this.newAddress = true;
         this.setState({
-            address: { street: '', number: '', city: '', state: '', country: '' },
-            displayDialog: true
+            address: { street: '', number: '', city: '', state: '', country: '', fk_personid: '' }
         });
     }
 
     save() {
         if (this.state.address.street != "" && this.state.address.number != "" && this.state.address.city != "" && this.state.address.state != "" && this.state.address.country != "") {
+            this.state.address.fk_personid = this.props.personId;
             this.props.saveAddress(this.state.address);
             this.growl.show({ severity: 'success', detail: this.newAddress ? "Data Saved Successfully" : "Data Updated Successfully" });
-            let path = '/Address';
-            this.props.history.push(path);
+            this.props.previousPage();
         }
     }
 
@@ -71,7 +69,7 @@ class Address extends Component {
 
     render() {
 
-        let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Lista de Pessoas</div>;
+        let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Lista de Endereços</div>;
 
         let footer = <div className="p-clearfix" style={{ width: '100%' }}>
             <Button style={{ float: 'left' }} label="Adicionar" icon="pi pi-plus" onClick={this.addNew} />
@@ -86,42 +84,42 @@ class Address extends Component {
                     <Column field="number" header="Número" />
                     <Column field="city" header="Cidade" />
                     <Column field="state" header="Estado" />
-                    <Column field="country" header="Pais" />
+                    <Column field="country" header="País" />
                 </DataTable>
                 <div>
                     {
                         this.state.address &&
                         <form>
                             <div className="form-row" style={{ marginTop: 10 }}>
-                                <div className="col-md-6">
-                                    <label htmlFor="firstName">Nome</label>
-                                    <InputText id="firstName" onChange={(e) => { this.updateProperty('firstName', e.target.value) }} value={this.state.address.firstName} style={{ width: '100%' }} required />
+                                <div className="col-md-10">
+                                    <label htmlFor="street">Rua</label>
+                                    <InputText id="street" onChange={(e) => { this.updateProperty('street', e.target.value) }} value={this.state.address.street} style={{ width: '100%' }} required />
                                 </div>
-                                <div className="col-md-6">
-                                    <label htmlFor="lastName">Sobrenome</label>
-                                    <InputText id="lastName" onChange={(e) => { this.updateProperty('lastName', e.target.value) }} value={this.state.address.lastName} style={{ width: '100%' }} required />
+                                <div className="col-md-2">
+                                    <label htmlFor="number">Número</label>
+                                    <InputText id="number" type="number" onChange={(e) => { this.updateProperty('number', e.target.value) }} value={this.state.address.number} style={{ width: '100%' }} required />
                                 </div>
                             </div>
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="col-md-4">
-                                    <label htmlFor="cpf">Cpf</label>
-                                    <InputText id="cpf" onChange={(e) => { this.updateProperty('cpf', e.target.value) }} value={this.state.address.cpf} style={{ width: '100%' }} required />
+                                    <label htmlFor="city">Cidade</label>
+                                    <InputText id="city" onChange={(e) => { this.updateProperty('city', e.target.value) }} value={this.state.address.city} style={{ width: '100%' }} required />
                                 </div>
-                                <div className="col-md-6">
-                                    <label htmlFor="email">E-mail</label>
-                                    <InputText id="email" onChange={(e) => { this.updateProperty('email', e.target.value) }} value={this.state.address.email} style={{ width: '100%' }} required />
+                                <div className="col-md-4">
+                                    <label htmlFor="state">Estado</label>
+                                    <InputText id="state" onChange={(e) => { this.updateProperty('state', e.target.value) }} value={this.state.address.state} style={{ width: '100%' }} required />
                                 </div>
-                                <div className="col-md-2">
-                                    <label htmlFor="phone">Celular</label>
-                                    <InputMask id="phone" mask="(99)99999-9999" onChange={(e) => { this.updateProperty('phone', e.target.value) }} value={this.state.address.phone} style={{ width: '100%' }} required />
+                                <div className="col-md-4">
+                                    <label htmlFor="country">País</label>
+                                    <InputText id="country" onChange={(e) => { this.updateProperty('country', e.target.value) }} value={this.state.address.country} style={{ width: '100%' }} required />
                                 </div>
                             </div>
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="form-group col-md-2">
-                                    <Button label="Excluir" disabled={this.newAddress ? true : false} icon="pi pi-times" onClick={this.delete} />
+                                    <Button label="Excluir" disabled={this.newAddress ? true : false} className="p-button-danger" icon="pi pi-times" onClick={this.delete} />
                                 </div>
                                 <div className="form-group col-md-10">
-                                    <Button label={this.newAddress ? "Próximo" : "Atualizar"} icon="pi pi-check" onClick={this.save} />
+                                    <Button label={this.newAddress ? "Salvar" : "Atualizar"} className="p-button-success" icon="pi pi-check" onClick={this.save} />
                                 </div>
                             </div>
                         </form>
@@ -134,10 +132,11 @@ class Address extends Component {
 
 function mapStateToProps(state) {
     return {
-        addresses: state.addresses.addresses,
-        loading: state.addresses.loading,
-        errors: state.addresses.errors,
-        forceReload: state.addresses.forceReload
+        addresses: state.client.addresses,
+        personId: state.client.personId,
+        loading: state.client.loading,
+        errors: state.client.errors,
+        forceReload: state.client.forceReload
     }
 }
 

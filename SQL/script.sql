@@ -1,6 +1,10 @@
+DROP TABLE "Address";
+
+DROP TABLE "Person";
+
 CREATE TABLE "Person" (
 	"PersonId" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-	"Cpf" varchar(11) NOT NULL UNIQUE,
+	"Cpf" varchar(11) NOT NULL,
 	"FirstName" varchar(50) NOT NULL,
 	"LastName" varchar(50) NOT NULL,
 	"Email" varchar(50) NOT NULL,

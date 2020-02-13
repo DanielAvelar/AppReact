@@ -1,6 +1,7 @@
 ﻿const initialState = {
     people: [],
     addresses: [],
+    personId: '',
     loading: false,
     errors: {},
     forceReload: false
@@ -25,8 +26,10 @@ export const actionCreators = {
             body: JSON.stringify(person)
         };
         const request = new Request(url, requestOptions);
-        await fetch(request);
-        dispatch({ type: 'SAVE_PERSON', person });
+        const response = await fetch(request);
+        const personRes = await response.json();
+        initialState.personId = personRes.personId;
+        dispatch({ type: 'SAVE_PERSON', personRes });
     },
     deletePerson: personId => async (dispatch, getState) => {
         const url = 'api/Client/DeletePerson/' + personId;
@@ -35,7 +38,7 @@ export const actionCreators = {
         };
         const request = new Request(url, requestOptions);
         await fetch(request);
-        dispatch({ type: 'DELETE_Person', personId });
+        dispatch({ type: 'DELETE_PERSON', personId });
     },
     requestAddresses: () => async (dispatch, getState) => {
 
@@ -69,7 +72,40 @@ export const actionCreators = {
     }
 };
 
-export const reducerPeople = (state, action) => {
+//export const reducer = (state, action) => {
+//    state = state || initialState;
+
+//    switch (action.type) {
+//        case 'FETCH_PEOPLE': {
+//            return {
+//                ...state,
+//                people: action.people,
+//                loading: false,
+//                errors: {},
+//                forceReload: false
+//            }
+//        }
+//        case 'SAVE_PERSON': {
+//            return {
+//                ...state,
+//                //people: Object.assign({}, action.personRes),
+//                person: action.personRes,
+//                personId: action.personRes.personId,
+//                forceReload: false
+//            }
+//        }
+//        case 'DELETE_PERSON': {
+//            return {
+//                ...state,
+//                personId: action.personId,
+//                forceReload: true
+//            }
+//        }
+//        default:
+//            return state;
+//    }
+//};
+export const reducer = (state, action) => {
     state = state || initialState;
 
     switch (action.type) {
@@ -85,8 +121,9 @@ export const reducerPeople = (state, action) => {
         case 'SAVE_PERSON': {
             return {
                 ...state,
-                people: Object.assign({}, action.person),
-                forceReload: true
+                people: Object.assign({}, action.personRes),
+                personId: action.personRes.personId,
+                forceReload: false
             }
         }
         case 'DELETE_PERSON': {
@@ -96,14 +133,6 @@ export const reducerPeople = (state, action) => {
                 forceReload: true
             }
         }
-        default:
-            return state;
-    }
-};
-export const reducerAddresses = (state, action) => {
-    state = state || initialState;
-
-    switch (action.type) {
         case 'FETCH_ADDRESSES': {
             return {
                 ...state,

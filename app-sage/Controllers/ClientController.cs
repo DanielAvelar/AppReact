@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AppSage.Controllers;
 using BusinessLibrary.Model;
 using BusinessLibrary.Service;
+using DataAccessLibrary.EntityModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreReactRedux.Controllers
@@ -38,7 +39,7 @@ namespace AspNetCoreReactRedux.Controllers
         [Route("SavePerson")]
         public async Task<IActionResult> SavePerson([FromBody] PersonModel model)
         {
-            bool response;
+            PersonModel response;
 
             try
             {
