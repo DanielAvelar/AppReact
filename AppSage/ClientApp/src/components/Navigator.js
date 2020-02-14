@@ -8,13 +8,8 @@ class Navigator extends Component {
         this.nextPage = this.nextPage.bind(this)
         this.previousPage = this.previousPage.bind(this)
         this.state = {
-            page: 1,
-            personId: ''
+            page: 1
         }
-    }
-
-    setPersonId(id) {
-        this.setState({ personId : id });
     }
 
     nextPage() {
@@ -28,8 +23,8 @@ class Navigator extends Component {
     render() {
         const { page } = this.state
         return (<div>
-            {page === 1 && <Person nextPage={this.nextPage} setPersonId={this.setPersonId}/>}
-            {page === 2 && <Address previousPage={this.previousPage} idPerson={this.props.personId}/>}
+            {page === 1 && <Person nextPage={this.nextPage} />}
+            {page === 2 && <Address previousPage={this.previousPage} />}
         </div>
         )
     }

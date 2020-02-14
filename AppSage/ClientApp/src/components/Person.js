@@ -3,11 +3,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+
+import TextField from '@material-ui/core/TextField';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
+import Button from '@material-ui/core/Button';
+
 import { Growl } from 'primereact/growl';
 import { actionCreators } from '../store/Client';
-import { InputMask } from 'primereact/inputmask';
 
 class Person extends Component {
     constructor() {
@@ -19,8 +22,8 @@ class Person extends Component {
         this.delete = this.delete.bind(this);
     }
 
-    componentDidMount() {
-        this.fetchData();
+    async componentDidMount() {
+        await this.fetchData();
     }
 
     componentDidUpdate() {
@@ -53,6 +56,10 @@ class Person extends Component {
         });
     }
 
+    nextPage() {
+        this.props.nextPage();
+    }
+
     save() {
         if (this.state.person.firstName != "" && this.state.person.lastName != "" && this.state.person.email != "" && this.state.person.phone != "") {
             this.props.savePerson(this.state.person);
@@ -67,11 +74,10 @@ class Person extends Component {
     }
 
     render() {
-
         let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Lista de Pessoas</div>;
 
         let footer = <div className="p-clearfix" style={{ width: '100%' }}>
-            <Button style={{ float: 'left' }} label="Adicionar" icon="pi pi-plus" onClick={this.addNew} />
+            <Button variant="contained" color="default" style={{ float: 'left' }} onClick={this.addNew}>Adicionar</Button>
         </div>;
 
         return (
@@ -91,34 +97,31 @@ class Person extends Component {
                         <form>
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="col-md-6">
-                                    <label htmlFor="firstName">Nome</label>
-                                    <InputText id="firstName" onChange={(e) => { this.updateProperty('firstName', e.target.value) }} value={this.state.person.firstName} style={{ width: '100%' }} required/>
+                                    <TextField maxLength="50" label="Nome" variant="outlined" id="firstName" onChange={(e) => { this.updateProperty('firstName', e.target.value) }} value={this.state.person.firstName} style={{ width: '100%' }} required/>
                                 </div>
                                 <div className="col-md-6">
-                                    <label htmlFor="lastName">Sobrenome</label>
-                                    <InputText id="lastName" onChange={(e) => { this.updateProperty('lastName', e.target.value) }} value={this.state.person.lastName} style={{ width: '100%' }} required/>
+                                    <TextField maxLength="50" label="Sobrenome" variant="outlined" id="lastName" onChange={(e) => { this.updateProperty('lastName', e.target.value) }} value={this.state.person.lastName} style={{ width: '100%' }} required/>
                                 </div>
                             </div>
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="col-md-4">
-                                    <label htmlFor="cpf">Cpf</label>
-                                    <InputMask id="cpf" mask="99999999999" onChange={(e) => { this.updateProperty('cpf', e.target.value) }} value={this.state.person.cpf} style={{ width: '100%' }} required />
+                                    <TextField id="cpf" label="Cpf" variant="outlined" onInput={(e) => {
+                                        e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 15)
+                                    }} onChange={(e) => { this.updateProperty('cpf', e.target.value) }} value={this.state.person.cpf} style={{ width: '100%' }} required />
                                 </div>
                                 <div className="col-md-6">
-                                    <label htmlFor="email">E-mail</label>
-                                    <InputText id="email" onChange={(e) => { this.updateProperty('email', e.target.value) }} value={this.state.person.email} style={{ width: '100%' }} required/>
+                                    <TextField id="email" label="E-mail" variant="outlined" maxLength="50" onChange={(e) => { this.updateProperty('email', e.target.value) }} value={this.state.person.email} style={{ width: '100%' }} required/>
                                 </div>
                                 <div className="col-md-2">
-                                    <label htmlFor="phone">Celular</label>
-                                    <InputMask id="phone" mask="(99)99999-9999" onChange={(e) => { this.updateProperty('phone', e.target.value) }} value={this.state.person.phone} style={{ width: '100%' }} required/>
+                                    <TextField id="phone" label="Celular" variant="outlined" maxLength="14" onChange={(e) => { this.updateProperty('phone', e.target.value) }} value={this.state.person.phone} style={{ width: '100%' }} required/>
                                 </div>
                             </div>
                             <div className="form-row" style={{ marginTop: 10 }}>
                                 <div className="form-group col-md-2">
-                                    <Button label="Excluir" disabled={this.newPerson ? true : false} className="p-button-danger" icon="pi pi-times" onClick={this.delete} />
+                                    <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} disabled={this.newPerson ? true : false} onClick={this.delete}>Excluir</Button>
                                 </div>
                                 <div className="form-group col-md-10">
-                                    <Button label={this.newPerson ? "Próximo" : "Atualizar"} className="p-button-success" icon="pi pi-check" onClick={this.save} />
+                                    <Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={this.save}> {this.newPerson ? "Salvar e cadastrar endereço" : "Atualizar"} </Button>
                                 </div>
                             </div>
                         </form>
@@ -134,6 +137,7 @@ function mapStateToProps(state) {
         people: state.client.people,
         loading: state.client.loading,
         personId: state.client.personId,
+        responseStatus: state.client.responseStatus,
         errors: state.client.errors,
         forceReload: state.client.forceReload
     }

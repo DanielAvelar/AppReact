@@ -2,6 +2,7 @@
     people: [],
     addresses: [],
     personId: '',
+    responseStatus: '',
     loading: false,
     errors: {},
     forceReload: false
@@ -28,7 +29,7 @@ export const actionCreators = {
         const request = new Request(url, requestOptions);
         const response = await fetch(request);
         const personRes = await response.json();
-        initialState.personId = personRes.personId;
+        //initialState.personId = personRes.personId;
         dispatch({ type: 'SAVE_PERSON', personRes });
     },
     deletePerson: personId => async (dispatch, getState) => {
@@ -72,39 +73,6 @@ export const actionCreators = {
     }
 };
 
-//export const reducer = (state, action) => {
-//    state = state || initialState;
-
-//    switch (action.type) {
-//        case 'FETCH_PEOPLE': {
-//            return {
-//                ...state,
-//                people: action.people,
-//                loading: false,
-//                errors: {},
-//                forceReload: false
-//            }
-//        }
-//        case 'SAVE_PERSON': {
-//            return {
-//                ...state,
-//                //people: Object.assign({}, action.personRes),
-//                person: action.personRes,
-//                personId: action.personRes.personId,
-//                forceReload: false
-//            }
-//        }
-//        case 'DELETE_PERSON': {
-//            return {
-//                ...state,
-//                personId: action.personId,
-//                forceReload: true
-//            }
-//        }
-//        default:
-//            return state;
-//    }
-//};
 export const reducer = (state, action) => {
     state = state || initialState;
 
@@ -122,7 +90,8 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 people: Object.assign({}, action.personRes),
-                personId: action.personRes.personId,
+                personId: action.personRes.personId !== undefined ? action.personRes.personId : '',
+                responseStatus: action.personRes.status !== undefined ? action.personRes.status : 200,
                 forceReload: false
             }
         }
