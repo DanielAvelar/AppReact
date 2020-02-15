@@ -1,18 +1,22 @@
-version: "3"
+version: "3.0"
 services:
-    web:
-        build: .
-        ports:
-            - "8000:80"
-        depends_on:
-            - db-server
-    db-server:
-        image: microsoft/mssql-server-linux
-        container_name: db-server
-        environment:
-          - ACCEPT_EULA=Y
-          - MSSQL_SA_PASSWORD=password123
-          - MSSQL_TCP_PORT=1433
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'Postgres2020!'
+    ports:
+      - '15432:5432'
+    volumes:
+      - PostgreSQLData:/var/lib/postgresql/data
 
-        ports:
-          - "1400:1433"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin'
+      PGADMIN_DEFAULT_PASSWORD: 'admin'
+    ports:
+      - '8080:80'
+    depends_on:
+      - postgres
+volumes:
+  PostgreSQLData:

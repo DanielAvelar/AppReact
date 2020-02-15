@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AppSage;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLibrary.EntityModels
 {
@@ -18,7 +19,7 @@ namespace DataAccessLibrary.EntityModels
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"Server=localhost;Database=Clients;Port=5432;User Id=postgres;Password=joaop0705*;");
+            optionsBuilder.UseNpgsql(GlobalVariables.PostresqlConnection);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
