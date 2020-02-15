@@ -10,13 +10,14 @@ $ npm install
 <h3 class="code-line" data-line-start=16 data-line-end=17 ><a id="Configurao_do_banco_de_dados_Postgres_16"></a>Configuração do banco de dados Postgres:</h3>
 <ul>
 <li class="has-line-data" data-line-start="18" data-line-end="19">Após instalar o Postgres, acessar o pgAdmin para executar o script de criação do Banco de Dados e suas respectivas tabelas.</li>
-<li class="has-line-data" data-line-start="19" data-line-end="21">O script se encontra na pasta SQL, na raiz do projeto - AppSage\SQL\script.sql</li>
+<li class="has-line-data" data-line-start="19" data-line-end="20">O script se encontra na pasta SQL, na raiz do projeto - AppSage\SQL\script.sql</li>
+<li class="has-line-data" data-line-start="20" data-line-end="22">A string de conexão com o banco de dados está nas propriedades do projeto AppSage, depois em Depurar e Variáveis de Ambiente.</li>
 </ul>
-<h3 class="code-line" data-line-start=21 data-line-end=22 ><a id="Configurao_do_Docker_Alternativa_para_o_Postgres_21"></a>Configuração do Docker (Alternativa para o Postgres):</h3>
-<p class="has-line-data" data-line-start="22" data-line-end="24"><img src="https://img.icons8.com/dusk/2x/docker.png" alt="picture"><br>
+<h3 class="code-line" data-line-start=22 data-line-end=23 ><a id="Configurao_do_Docker_Alternativa_para_o_Postgres_22"></a>Configuração do Docker (Alternativa para o Postgres):</h3>
+<p class="has-line-data" data-line-start="23" data-line-end="25"><img src="https://img.icons8.com/dusk/2x/docker.png" alt="picture"><br>
 Caso não queria instalar o Postgres localmente na máquina, podemos utilizar o Docker e subir a image do Postgres:</p>
 <ul>
-<li class="has-line-data" data-line-start="26" data-line-end="27">Instalar o Docker (<a href="https://www.docker.com/">https://www.docker.com/</a>).</li>
-<li class="has-line-data" data-line-start="27" data-line-end="28">Na raiz do projeto executar o comando: docker-compose up -d</li>
-<li class="has-line-data" data-line-start="28" data-line-end="29">Para verificar se a imagem do docker subiu corretamente, acessar a url: <a href="http://localhost:8080">http://localhost:8080</a></li>
+<li class="has-line-data" data-line-start="27" data-line-end="28">Instalar o Docker (<a href="https://www.docker.com/">https://www.docker.com/</a>).</li>
+<li class="has-line-data" data-line-start="28" data-line-end="29">Na raiz do projeto executar o comando: docker-compose up -d</li>
+<li class="has-line-data" data-line-start="29" data-line-end="30">Para verificar se a imagem do docker subiu corretamente, acessar a url: <a href="http://localhost:8080">http://localhost:8080</a></li>
 </ul>
