@@ -7,6 +7,8 @@ namespace BusinessLibrary.Service
 {
     public interface IClientService
     {
+        Task<List<ClientModel>> GetAll();
+
         Task<List<PersonModel>> GetPerson();
         Task<PersonModel> SavePerson(PersonModel person);
         Task<bool> DeletePerson(int personId);

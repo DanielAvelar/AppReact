@@ -1,14 +1,40 @@
-﻿using BusinessLibrary.Model;
-using DataAccessLibrary.EntityModels;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLibrary.Model;
+using DataAccessLibrary.EntityModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLibrary.Service
 {
     public class ClientService : IClientService
     {
+        public async Task<List<ClientModel>> GetAll()
+        {
+            using (DBContext db = new DBContext())
+            {
+                return await (from p in db.Person
+                             join a in db.Address
+                                 on p.PersonId equals a.Fk_PersonId into ap
+                              from x in ap.DefaultIfEmpty()
+                              select new ClientModel
+                             {
+                                PersonId = p.PersonId,
+                                Cpf = p.Cpf,
+                                FirstName = p.FirstName,
+                                LastName = p.LastName,
+                                Email = p.Email,
+                                Phone = p.Phone,
+                                AddressId = x.AddressId,
+                                Street = x.Street ?? "",
+                                Number = x.Number,
+                                City = x.City ?? "",
+                                State = x.State ?? "",
+                                Country = x.Country ?? ""
+                             }).ToListAsync();
+            }
+        }
+
         public async Task<List<PersonModel>> GetPerson()
         {
             using (DBContext db = new DBContext())
@@ -73,7 +99,12 @@ namespace BusinessLibrary.Service
         {
             using (DBContext db = new DBContext())
             {
-                DataAccessLibrary.EntityModels.Person person = db.Person.Where(x => x.PersonId == personId).FirstOrDefault();
+                Person person = db.Person.Where(x => x.PersonId == personId).FirstOrDefault();
+                Address address = db.Address.Where(x => x.Fk_PersonId == personId).FirstOrDefault();
+                if (address != null)
+                {
+                    db.Address.Remove(address);
+                }
                 if (person != null)
                 {
                     db.Person.Remove(person);
@@ -86,16 +117,16 @@ namespace BusinessLibrary.Service
         {
             using (DBContext db = new DBContext())
             {
-                return await(from a in db.Address.AsNoTracking()
-                             select new AddressModel
-                             {
-                                 AddressId = a.AddressId,
-                                 Street = a.Street,
-                                 Number = a.Number,
-                                 City = a.City,
-                                 State = a.State,
-                                 Country = a.Country
-                             }).ToListAsync();
+                return await (from a in db.Address.AsNoTracking()
+                              select new AddressModel
+                              {
+                                  AddressId = a.AddressId,
+                                  Street = a.Street,
+                                  Number = a.Number,
+                                  City = a.City,
+                                  State = a.State,
+                                  Country = a.Country
+                              }).ToListAsync();
             }
         }
 

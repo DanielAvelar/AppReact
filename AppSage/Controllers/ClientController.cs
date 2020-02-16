@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AppSage.Controllers;
 using BusinessLibrary.Model;
 using BusinessLibrary.Service;
-using DataAccessLibrary.EntityModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreReactRedux.Controllers
@@ -16,6 +15,23 @@ namespace AspNetCoreReactRedux.Controllers
         public ClientController(IClientService clientService)
         {
             _clientService = clientService;
+        }
+
+        [HttpGet]
+        [Route("All")]
+        public async Task<IActionResult> All()
+        {
+            List<ClientModel> response = new List<ClientModel>();
+
+            try
+            {
+                response = await _clientService.GetAll();
+            }
+            catch (Exception ex)
+            {
+                return CreateServerErrorResponse(ex, null);
+            }
+            return CreateResponse(response);
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
 ﻿const initialState = {
+    all: [],
     people: [],
     addresses: [],
     personId: '',
@@ -9,6 +10,14 @@
 }
 
 export const actionCreators = {
+    requestAll: () => async (dispatch, getState) => {
+
+        const url = 'api/Client/All';
+        const response = await fetch(url);
+        const all = await response.json();
+        dispatch({ type: 'FETCH_ALL', all });
+    },
+
     requestPeople: () => async (dispatch, getState) => {
 
         const url = 'api/Client/People';
@@ -29,7 +38,6 @@ export const actionCreators = {
         const request = new Request(url, requestOptions);
         const response = await fetch(request);
         const personRes = await response.json();
-        //initialState.personId = personRes.personId;
         dispatch({ type: 'SAVE_PERSON', personRes });
     },
     deletePerson: personId => async (dispatch, getState) => {
@@ -77,6 +85,15 @@ export const reducer = (state, action) => {
     state = state || initialState;
 
     switch (action.type) {
+        case 'FETCH_ALL': {
+            return {
+                ...state,
+                all: action.all,
+                loading: false,
+                errors: {},
+                forceReload: false
+            }
+        }
         case 'FETCH_PEOPLE': {
             return {
                 ...state,

@@ -33,7 +33,7 @@ class Address extends Component {
     }
 
     fetchData() {
-        this.props.requestAddresses();
+        this.props.requestAll();
     }
 
     updateProperty(property, value) {
@@ -60,35 +60,48 @@ class Address extends Component {
         if (this.state.address.street != "" && this.state.address.number != "" && this.state.address.city != "" && this.state.address.state != "" && this.state.address.country != "") {
             this.state.address.fk_personid = this.props.personId;
             this.props.saveAddress(this.state.address);
-            this.growl.show({ severity: 'success', detail: this.newAddress ? "Data Saved Successfully" : "Data Updated Successfully" });
+            this.growl.show({ severity: 'success', detail: this.newAddress ? "Dados salvos com sucesso!" : "Dados atualizados com sucesso!" });
             this.props.previousPage();
         }
     }
 
     delete() {
         this.props.deleteAddress(this.state.address.addressId);
-        this.growl.show({ severity: 'error', detail: "Data Deleted Successfully" });
+        this.growl.show({ severity: 'error', detail: "Dados excluidos com sucesso!" });
+        this.addNew();
     }
 
     render() {
 
-        let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Lista de Endereços</div>;
+        let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Dados Cadastrados</div>;
 
         let footer = <div className="p-clearfix" style={{ width: '100%' }}>
-            <Button variant="contained" color="default" style={{ float: 'left' }} onClick={this.addNew}>Adicionar</Button>
+            <Button variant="contained" color="default" style={{ float: 'left' }} onClick={this.addNew}>Adicionar Endereço</Button>
         </div>;
 
         return (
             <div>
                 <Growl ref={(el) => this.growl = el} />
-                <DataTable value={this.props.addresses} selectionMode="single" header={header} footer={footer} selection={this.state.selectedAddress} onSelectionChange={e => this.setState({ selectedAddress: e.value })} onRowSelect={this.onAddressSelect} style={{ marginTop: 10 }} scrollable={true} scrollHeight="200px">
-                    <Column field="addressId" header="ID" />
-                    <Column field="street" header="Rua" />
-                    <Column field="number" header="Número" />
-                    <Column field="city" header="Cidade" />
-                    <Column field="state" header="Estado" />
-                    <Column field="country" header="País" />
-                </DataTable>
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <DataTable value={this.props.all} selectionMode="single" header={header} footer={footer} selection={this.state.selectedAddress} onSelectionChange={e => this.setState({ selectedAddress: e.value })} onRowSelect={this.onAddressSelect} style={{ marginTop: 10 }} scrollable={true} scrollHeight="200px">
+                                <Column field="personId" header="ID" style={{ width: '0em', fontSize: '11px', display: 'none' }} />
+                                <Column field="cpf" header="Cpf" style={{ fontSize: '11px', width: '8%', textAlign: 'center' }} />
+                                <Column field="firstName" header="Nome" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="lastName" header="Sobrenome" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="email" header="E-mail" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="phone" header="Celular" style={{ fontSize: '11px', width: '10%' }} />
+                                <Column field="addressId" header="ID" style={{ width: '0em', fontSize: '11px', display: 'none' }} />
+                                <Column field="street" header="Rua" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="number" header="Número" style={{ fontSize: '11px', width: '5%', textAlign: 'center' }} />
+                                <Column field="city" header="Cidade" style={{ fontSize: '11px', width: '7%', textAlign: 'center' }} />
+                                <Column field="state" header="Estado" style={{ fontSize: '11px', width: '5%', textAlign: 'center' }} />
+                                <Column field="country" header="País" style={{ fontSize: '11px', width: '5%', textAlign: 'center' }} />
+                            </DataTable>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     {
                         this.state.address &&
@@ -117,7 +130,7 @@ class Address extends Component {
                                     <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} disabled={this.newAddress ? true : false} onClick={this.delete}>Excluir</Button>
                                 </div>
                                 <div className="form-group col-md-10">
-                                    <Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={this.save}> {this.newAddress ? "Salvar e cadastrar endereço" : "Atualizar"} </Button>
+                                    <Button variant="contained" color="primary" startIcon={<SaveIcon />} onClick={this.save}> {this.newAddress ? "Salvar" : "Atualizar"} </Button>
                                 </div>
                             </div>
                         </form>
@@ -130,6 +143,7 @@ class Address extends Component {
 
 function mapStateToProps(state) {
     return {
+        all: state.client.all,
         addresses: state.client.addresses,
         personId: state.client.personId,
         loading: state.client.loading,

@@ -33,7 +33,7 @@ class Person extends Component {
     }
 
     fetchData() {
-        this.props.requestPeople();
+        this.props.requestAll();
     }
 
     updateProperty(property, value) {
@@ -63,34 +63,48 @@ class Person extends Component {
     save() {
         if (this.state.person.firstName != "" && this.state.person.lastName != "" && this.state.person.email != "" && this.state.person.phone != "") {
             this.props.savePerson(this.state.person);
-            this.growl.show({ severity: 'success', detail: this.newPerson ? "Data Saved Successfully" : "Data Updated Successfully" });
+            this.growl.show({ severity: 'success', detail: this.newPerson ? "Dados salvos com sucesso!" : "Dados atualizados com sucesso!" });
             this.props.nextPage();
         }
     }
 
     delete() {
         this.props.deletePerson(this.state.person.personId);
-        this.growl.show({ severity: 'error', detail: "Data Deleted Successfully" });
+        this.growl.show({ severity: 'error', detail: "Dados excluidos com sucesso!" });
+        this.addNew();
     }
 
     render() {
-        let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Lista de Pessoas</div>;
+        let header = <div className="p-clearfix" style={{ lineHeight: '1.87em' }}>Dados Cadastrados</div>;
 
         let footer = <div className="p-clearfix" style={{ width: '100%' }}>
-            <Button variant="contained" color="default" style={{ float: 'left' }} onClick={this.addNew}>Adicionar</Button>
+            <Button variant="contained" color="default" style={{ float: 'left' }} onClick={this.addNew}>Adicionar Pessoa</Button>
         </div>;
 
         return (
             <div>
                 <Growl ref={(el) => this.growl = el} />
-                <DataTable value={this.props.people} selectionMode="single" header={header} footer={footer} selection={this.state.selectedPerson} onSelectionChange={e => this.setState({ selectedPerson: e.value })} onRowSelect={this.onPersonSelect} style={{ marginTop: 10 }} scrollable={true} scrollHeight="200px">
-                    <Column field="personId" header="ID" />
-                    <Column field="cpf" header="Cpf" />
-                    <Column field="firstName" header="Nome" />
-                    <Column field="lastName" header="Sobrenome" />
-                    <Column field="email" header="E-mail" />
-                    <Column field="phone" header="Celular" />
-                </DataTable>
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <DataTable value={this.props.all} selectionMode="single" header={header} footer={footer} selection={this.state.selectedPerson} onSelectionChange={e => this.setState({ selectedPerson: e.value })} onRowSelect={this.onPersonSelect} style={{ marginTop: 10, fontWeight: 'bold' }} scrollable={true} scrollHeight="200px">
+                                <Column field="personId" header="ID" style={{ width: '0em', fontSize: '11px', display: 'none' }} />
+                                <Column field="cpf" header="Cpf" style={{ fontSize: '11px', width: '8%', textAlign: 'center' }} />
+                                <Column field="firstName" header="Nome" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="lastName" header="Sobrenome" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="email" header="E-mail" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="phone" header="Celular" style={{ fontSize: '11px', width: '10%' }} />
+                                <Column field="addressId" header="ID" style={{ width: '0em', fontSize: '11px', display: 'none' }} />
+                                <Column field="street" header="Rua" style={{ fontSize: '11px', width: '15%', textAlign: 'center' }} />
+                                <Column field="number" header="Número" style={{ fontSize: '11px', width: '5%', textAlign: 'center' }} />
+                                <Column field="city" header="Cidade" style={{ fontSize: '11px', width: '7%', textAlign: 'center' }} />
+                                <Column field="state" header="Estado" style={{ fontSize: '11px', width: '5%', textAlign: 'center' }} />
+                                <Column field="country" header="País" style={{ fontSize: '11px', width: '5%', textAlign: 'center' }} />
+                            </DataTable>
+                        </div>
+                    </div>
+                </div>
+                
                 <div>
                     {
                         this.state.person &&
@@ -134,6 +148,7 @@ class Person extends Component {
 
 function mapStateToProps(state) {
     return {
+        all: state.client.all,
         people: state.client.people,
         loading: state.client.loading,
         personId: state.client.personId,
