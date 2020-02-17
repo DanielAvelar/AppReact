@@ -1,5 +1,11 @@
 version: "3.0"
 services:
+  api-sage:
+    build: .
+    environment:
+      POSTGRESQL_CONNECTION: 'Server=postgres;Port=5432;Database=Clients;User Id=postgres;Password=Postgres2020!;'
+    ports:
+      - '8000:80'
   postgres:
     image: postgres
     environment:
