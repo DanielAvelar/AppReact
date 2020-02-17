@@ -12,5 +12,15 @@ $ npm install
 <ul>
 <li class="has-line-data" data-line-start="20" data-line-end="21">Após instalar o Postgres, acessar o pgAdmin para executar o script de criação do Banco de Dados e suas respectivas tabelas.</li>
 <li class="has-line-data" data-line-start="21" data-line-end="22">O script se encontra na pasta SQL, na raiz do projeto - AppSage\SQL\script.sql</li>
-<li class="has-line-data" data-line-start="22" data-line-end="23">A string de conexão com o banco de dados está nas propriedades do projeto AppSage, depois em Depurar e Variáveis de Ambiente.</li>
+<li class="has-line-data" data-line-start="22" data-line-end="24">A string de conexão com o banco de dados está nas propriedades do projeto AppSage, depois em Depurar e Variáveis de Ambiente.</li>
+</ul>
+<h3 class="code-line" data-line-start=24 data-line-end=25 ><a id="Executando_no_Visual_Code_24"></a>Executando no Visual Code:</h3>
+<ul>
+<li class="has-line-data" data-line-start="26" data-line-end="27">Efetuar uma copia do repositório do GitHub: git clone <a href="https://github.com/DanielAvelar/AppSage.git">https://github.com/DanielAvelar/AppSage.git</a></li>
+<li class="has-line-data" data-line-start="27" data-line-end="28">Abrir com o Visual Code a pasta aonde estão os arquivos do projeto.</li>
+<li class="has-line-data" data-line-start="28" data-line-end="29">Abrir o terminal do Visual Code e acessar a pasta AppSage-master\AppSage\ClientApp.</li>
+<li class="has-line-data" data-line-start="29" data-line-end="30">Executar o comando npm install, para instalar as dependências do NPM.</li>
+<li class="has-line-data" data-line-start="30" data-line-end="31">Retornar uma pasta para AppSage-master\AppSage e executar o comando dotnet build para compilar o projeto.</li>
+<li class="has-line-data" data-line-start="31" data-line-end="32">Depois executar o comando dotnet run, para executar o projeto.</li>
+<li class="has-line-data" data-line-start="32" data-line-end="33">Abra o projeto no navegador <a href="http://localhost:56823">http://localhost:56823</a></li>
 </ul>
