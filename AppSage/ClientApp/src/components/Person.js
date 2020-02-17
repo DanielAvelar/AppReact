@@ -61,7 +61,7 @@ class Person extends Component {
     }
 
     save() {
-        if (this.state.person.firstName != "" && this.state.person.lastName != "" && this.state.person.email != "" && this.state.person.phone != "") {
+        if (this.state.person.firstName !== "" && this.state.person.lastName !== "" && this.state.person.email !== "" && this.state.person.phone !== "") {
             this.props.savePerson(this.state.person);
             this.growl.show({ severity: 'success', detail: this.newPerson ? "Dados salvos com sucesso!" : "Dados atualizados com sucesso!" });
             this.props.nextPage();

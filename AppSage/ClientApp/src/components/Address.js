@@ -57,7 +57,7 @@ class Address extends Component {
     }
 
     save() {
-        if (this.state.address.street != "" && this.state.address.number != "" && this.state.address.city != "" && this.state.address.state != "" && this.state.address.country != "") {
+        if (this.state.address.street !== "" && this.state.address.number !== "" && this.state.address.city !== "" && this.state.address.state !== "" && this.state.address.country !== "") {
             this.state.address.fk_personid = this.props.personId;
             this.props.saveAddress(this.state.address);
             this.growl.show({ severity: 'success', detail: this.newAddress ? "Dados salvos com sucesso!" : "Dados atualizados com sucesso!" });
