@@ -12,7 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "POSTGRESQL_CONNECTION": "Server=localhost;Port=5432;Database=Clients;User Id=postgres;Password=Postgres2020!;",
+        "POSTGRESQL_CONNECTION": "Server=localhost;Port=15432;Database=Clients;User Id=postgres;Password=Postgres2019!;",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
